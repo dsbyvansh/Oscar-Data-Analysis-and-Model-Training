@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 '''Reading the dataset'''
-data = pd.read_csv('full_data.csv')
+data = pd.read_csv('full_data.csv',sep = '\t')
 df = pd.DataFrame(data)
 print(df.shape)
-print(df.describe)
+print(df.describe())
 print(df.isnull().sum().sum()) #Number of Null Values
 
 
@@ -15,7 +15,7 @@ print(df.isnull().sum().sum()) #Number of Null Values
 drop_columns = ['NomId', 'FilmId', 'NomineeIds',
     'Category', 'Nominees',
     'Detail', 'Note', 'Citation', 'MultifilmNomination']
-df.drop(columns = drop_columns, axis = 1)
+df = df.drop(columns = drop_columns)
 
 '''Preprocessing Phase-2 (Filtering rows with 100% win-rate)'''
 df = df[~df["Class"].isin(["SciTech", "Special"])]
@@ -23,7 +23,17 @@ print(df.shape)             # should show 10,730 rows
 print(df["Class"].unique()) # SciTech and Special should be gone
 
 '''Preprocessing Phase-3 (Fixing the target variable winner)'''
-df['Winner'].fillna("False") # replacing null values with false for no wins
-df['Winner'].replace("True", 1) # 1 = win 
-df['Winner'].replace("False", 0) # 0 = no win
+df['Winner'] = df['Winner'].fillna(False) # replacing null values with false for no wins
+df['Winner'] = df['Winner'].astype(int) 
+print(df['Winner'].value_counts())
 
+'''Preprocessing Phase-4 (Engineering the Year Column)'''
+df['Year_clean'] = df['Year']
+df['Year_clean'] = df['Year_clean'].replace("1927/28","1928")
+df['Year_clean'] = df['Year_clean'].replace("1928/29","1929")
+df['Year_clean'] = df['Year_clean'].replace("1929/30","1930")
+df['Year_clean'] = df['Year_clean'].replace("1930/31","1931")
+df['Year_clean'] = df['Year_clean'].replace("1931/32","1932")
+df['Year_clean'] = df['Year_clean'].replace("1932/33","1933")
+df['Year'].astype(int)
+df['Decade'] = (df['Year'] // 10) * 10
