@@ -21,3 +21,9 @@ df.drop(columns = drop_columns, axis = 1)
 df = df[~df["Class"].isin(["SciTech", "Special"])]
 print(df.shape)             # should show 10,730 rows
 print(df["Class"].unique()) # SciTech and Special should be gone
+
+'''Preprocessing Phase-3 (Fixing the target variable winner)'''
+df['Winner'].fillna("False") # replacing null values with false for no wins
+df['Winner'].replace("True", 1) # 1 = win 
+df['Winner'].replace("False", 0) # 0 = no win
+
