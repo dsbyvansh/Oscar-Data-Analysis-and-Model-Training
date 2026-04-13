@@ -41,3 +41,8 @@ df['Decade'] = (df['Year'] // 10) * 10
 '''Preprocessing Phase-5 (Handle remaining missing values)'''
 df['Film'] = df["Film"].fillna('Unknown')
 df['Name'] = df["Name"].fillna('Unknown')
+
+'''Preprocessing Phase-6 (Feature Engineering)'''
+df["film_nom_count"] = df.groupby(["Film","Year_clean"])['Year_clean'].count()
+print(df['Film','Ceremony','film_nom_count'].head(20))
+print(f"\nMax nominations in a single film: {df['film_nom_count'].max()}")
