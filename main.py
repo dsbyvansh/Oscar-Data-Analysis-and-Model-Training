@@ -37,3 +37,7 @@ df['Year_clean'] = df['Year_clean'].replace("1931/32","1932")
 df['Year_clean'] = df['Year_clean'].replace("1932/33","1933")
 df['Year'].astype(int)
 df['Decade'] = (df['Year'] // 10) * 10
+
+'''Preprocessing Phase-5 (Handle remaining missing values)'''
+df['Film'] = df["Film"].fillna('Unknown')
+df['Name'] = df["Name"].fillna('Unknown')
