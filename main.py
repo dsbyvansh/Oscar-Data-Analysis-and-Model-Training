@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.preprocessing import OneHotEncoder,LabelEncoder
+
 
 '''Reading the dataset'''
 data = pd.read_csv('full_data.csv',sep = '\t')
@@ -50,3 +52,17 @@ print(f"\nMax nominations in a single film: {df['film_nom_count'].max()}")
 #Part-2(Winning rate of a category)
 df['category_win_rate'] = df.groupby(['CanonicalCategory'])['Winner'].transform('mean')
 print(df['category_win_rate'].head(20))
+
+'''Preprocessing Phase-7 (Encoding Categorical Values)'''
+class_encoder = OneHotEncoder()
+class_encoded_df = pd.DataFrame(
+    class_encoder.fit_transform(df[['Class']]).toarray(),
+    columns=class_encoder.get_feature_names_out(['Class']),
+    index = df.index
+)
+df = pd.concat([df,class_encoded_df],axis=1)
+cat_encoder = LabelEncoder()
+df['CanonicalCategory_encoded'] = pd.Series(
+    cat_encoder.fit_transform(df['CanonicalCategory']),
+    index=df.index  
+)
