@@ -36,13 +36,17 @@ df['Year_clean'] = df['Year_clean'].replace("1930/31","1931")
 df['Year_clean'] = df['Year_clean'].replace("1931/32","1932")
 df['Year_clean'] = df['Year_clean'].replace("1932/33","1933")
 df['Year'].astype(int)
-df['Decade'] = (df['Year'] // 10) * 10
+df['Decade'] = (df['Year_clean'] // 10) * 10
 
 '''Preprocessing Phase-5 (Handle remaining missing values)'''
 df['Film'] = df["Film"].fillna('Unknown')
 df['Name'] = df["Name"].fillna('Unknown')
 
 '''Preprocessing Phase-6 (Feature Engineering)'''
-df["film_nom_count"] = df.groupby(["Film","Year_clean"])['Year_clean'].count()
+#Part-1(Number of times a film has been nominated)
+df["film_nom_count"] = df.groupby(["Film","Year_clean"])['Year_clean'].transform('count')
 print(df['Film','Ceremony','film_nom_count'].head(20))
 print(f"\nMax nominations in a single film: {df['film_nom_count'].max()}")
+#Part-2(Winning rate of a category)
+df['category_win_rate'] = df.groupby(['CanonicalCategory'])['Winner'].transform('mean')
+print(df['category_win_rate'].head(20))
