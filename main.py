@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.preprocessing import OneHotEncoder,LabelEncoder
-
+from sklearn.model_selection import train_test_split
 
 '''Reading the dataset'''
 data = pd.read_csv('full_data.csv',sep = '\t')
@@ -56,7 +56,7 @@ print(df['category_win_rate'].head(20))
 '''Preprocessing Phase-7 (Encoding Categorical Values)'''
 class_encoder = OneHotEncoder()
 class_encoded_df = pd.DataFrame(
-    class_encoder.fit_transform(df[['Class']]).toarray(),
+    class_encoder.fit_transform(df[['Class']]),
     columns=class_encoder.get_feature_names_out(['Class']),
     index = df.index
 )
@@ -68,6 +68,15 @@ df['CanonicalCategory_encoded'] = pd.Series(
 )
 
 '''Train Test Split for all problem types'''
-x_classification = df.drop(columns=["Winner"])
+#Classification
+x_classification = df.drop(columns=["Winner","category_win_rate"])
 y_classification = df['Winner'] 
-x_ctrain,x_ctest,y_ctrain,y_ctest = train_test_split(x_classification,y_classification,test_size = 0.2, random_state = 42,stratify= y)
+x_ctrain,x_ctest,y_ctrain,y_ctest = train_test_split(x_classification,y_classification,test_size = 0.2, random_state = 42,stratify= y_classification)
+
+#Regression
+x_regression = df.drop(columns=['category_win_rate','Winner'])
+y_regression = df['category_win_rate']
+x_rtrain,x_rtest,y_rtrain,y_rtest = train_test_split(x_regression,y_regression,test_size = 0.2, random_state = 42)
+
+#Clustering
+x_clustering = df.drop(columns=["Winner","category_win_rate"])
