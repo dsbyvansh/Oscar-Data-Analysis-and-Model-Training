@@ -66,3 +66,8 @@ df['CanonicalCategory_encoded'] = pd.Series(
     cat_encoder.fit_transform(df['CanonicalCategory']),
     index=df.index  
 )
+
+'''Train Test Split for all problem types'''
+x_classification = df.drop(columns=["Winner"])
+y_classification = df['Winner'] 
+x_ctrain,x_ctest,y_ctrain,y_ctest = train_test_split(x_classification,y_classification,test_size = 0.2, random_state = 42,stratify= y)
