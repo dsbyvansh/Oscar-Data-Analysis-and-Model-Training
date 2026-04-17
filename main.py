@@ -67,16 +67,20 @@ df['CanonicalCategory_encoded'] = pd.Series(
     index=df.index  
 )
 
-'''Train Test Split for all problem types'''
-#Classification
-x_classification = df.drop(columns=["Winner","category_win_rate"])
-y_classification = df['Winner'] 
-x_ctrain,x_ctest,y_ctrain,y_ctest = train_test_split(x_classification,y_classification,test_size = 0.2, random_state = 42,stratify= y_classification)
+'''Define Final Feature Set'''
+feature_columns = [
+    'Ceremony', 'Year_clean', 'Decade',
+    'film_nom_count', 'category_win_rate',
+    'CanonicalCategory_encoded',
+    'Class_Acting', 'Class_Directing', 'Class_Music',
+    'Class_Production', 'Class_Title', 'Class_Writing'
+]
 
-#Regression
-x_regression = df.drop(columns=['category_win_rate','Winner'])
-y_regression = df['category_win_rate']
-x_rtrain,x_rtest,y_rtrain,y_rtest = train_test_split(x_regression,y_regression,test_size = 0.2, random_state = 42)
+x = df[feature_columns]
+y = df['Winner']
 
-#Clustering
-x_clustering = df.drop(columns=["Winner","category_win_rate"])
+x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.2,random_state=42,stratify=y)
+
+print(f"Shape of x train: {x_train.shape}")
+print(f"Shape of x test: {x_test.shape}")
+print(f"Value counts of y train: {y_train.value_counts()}")
