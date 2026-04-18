@@ -37,7 +37,7 @@ df['Year_clean'] = df['Year_clean'].replace("1929/30","1930")
 df['Year_clean'] = df['Year_clean'].replace("1930/31","1931")
 df['Year_clean'] = df['Year_clean'].replace("1931/32","1932")
 df['Year_clean'] = df['Year_clean'].replace("1932/33","1933")
-df['Year_clean'].astype(int)
+df['Year_clean'] = df['Year_clean'].astype(int)
 df['Decade'] = (df['Year_clean'] // 10) * 10
 
 '''Preprocessing Phase-5 (Handle remaining missing values)'''
@@ -56,7 +56,7 @@ print(df['category_win_rate'].head(20))
 '''Preprocessing Phase-7 (Encoding Categorical Values)'''
 class_encoder = OneHotEncoder()
 class_encoded_df = pd.DataFrame(
-    class_encoder.fit_transform(df[['Class']]).toarray(),
+    class_encoder.fit_transform(df[['Class']]),
     columns=class_encoder.get_feature_names_out(['Class']),
     index = df.index
 )
