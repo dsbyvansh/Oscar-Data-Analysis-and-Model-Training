@@ -84,6 +84,11 @@ x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.2,random_state=
 print(f"Shape of x train: {x_train.shape}")
 print(f"Shape of x test: {x_test.shape}")
 print(f"Value counts of y train: {y_train.value_counts()}")
+train_df = x_train.copy()
+train_df['Winner'] = y_train.values
+train_df['Class'] = df.loc[x_train.index, 'Class']           # original text column
+train_df['CanonicalCategory'] = df.loc[x_train.index, 'CanonicalCategory']  # useful later
+train_df['Film'] = df.loc[x_train.index, 'Film']             # useful later
 
 '''Exploratory Data Analysis'''
 
@@ -92,4 +97,10 @@ sns.countplot(x=y_train,palette=["#AF1577","#151AAD"])
 plt.title("Winner count")
 plt.xlabel("Winner (0 = No, 1 = Yes)")
 plt.ylabel("Count")
+plt.show()
+
+sns.barplot(x=train_df["Class"],y=y_train)
+plt.title("Win rate by class")
+plt.xlabel("Class")
+plt.ylabel("Winner (0 = No, 1 = Yes)")
 plt.show()
