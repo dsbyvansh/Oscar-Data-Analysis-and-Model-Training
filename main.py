@@ -54,7 +54,7 @@ df['category_win_rate'] = df.groupby(['CanonicalCategory'])['Winner'].transform(
 print(df['category_win_rate'].head(20))
 
 '''Preprocessing Phase-7 (Encoding Categorical Values)'''
-class_encoder = OneHotEncoder()
+class_encoder = OneHotEncoder(sparse_output=False)
 class_encoded_df = pd.DataFrame(
     class_encoder.fit_transform(df[['Class']]),
     columns=class_encoder.get_feature_names_out(['Class']),
@@ -84,3 +84,12 @@ x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.2,random_state=
 print(f"Shape of x train: {x_train.shape}")
 print(f"Shape of x test: {x_test.shape}")
 print(f"Value counts of y train: {y_train.value_counts()}")
+
+'''Exploratory Data Analysis'''
+
+#Target Variable Analysis
+sns.countplot(x=y_train,palette=["#AF1577","#151AAD"])
+plt.title("Winner count")
+plt.xlabel("Winner (0 = No, 1 = Yes)")
+plt.ylabel("Count")
+plt.show()
