@@ -90,6 +90,7 @@ train_df['Class'] = df.loc[x_train.index, 'Class']           # original text col
 train_df['CanonicalCategory'] = df.loc[x_train.index, 'CanonicalCategory']  # useful later
 train_df['Film'] = df.loc[x_train.index, 'Film']             # useful later
 nominations_per_decade = train_df.groupby('Decade')['Winner'].count()
+win_rate_decade = train_df.groupby('Decade')['Winner'].mean()
 
 '''Exploratory Data Analysis'''
 
@@ -106,7 +107,6 @@ plt.xlabel("Class")
 plt.ylabel("Winner (0 = No, 1 = Yes)")
 plt.show()
 
-
 #Time Trends
 sns.lineplot(x=train_df['Decade'],y=nominations_per_decade)
 plt.title("Number of Nominations per decade")
@@ -114,3 +114,8 @@ plt.xlabel("Decade")
 plt.ylabel("Number of nominations")
 plt.show()
 
+sns.lineplot(x=win_rate_decade.index, y=win_rate_decade.values)
+plt.title("Win-Rate per decade")
+plt.xlabel("Decade")
+plt.ylabel("Win-Rate")
+plt.show()
